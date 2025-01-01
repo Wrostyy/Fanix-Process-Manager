@@ -1,13 +1,13 @@
 import tkinter as tk
 import psutil
 import subprocess
-import webbrowser  # Web sayfalarını açmak için
+import webbrowser  
 from tkinter import filedialog
 from tkinter import ttk
 import sys
 
 def on_close():
-    sys.exit()  # Uygulamayı kapat
+    sys.exit()  
 
 root = tk.Tk()
 root.title("Terms of Service")
@@ -15,7 +15,6 @@ root.geometry("600x190")
 root.iconbitmap(default='fanix.ico')
 root.resizable(width=False, height=False)
 
-# Kullanıcının kabul etmesi gereken metni burada tanımlayın
 terms_text = """
 Fanix Bot Service ve Fanix Process Manager uygulamasını ve alanlarını (Bot hizmetleri, Uygulama hizmetlerini)
 kullandığınız için Hizmet şartlarına uymayı kabul ediyorsunuz.
@@ -24,7 +23,7 @@ Tarafınızdan program üzerinden yanlış hamleler gütmeniz sonucu oluşacak t
     sorumluluğumuz dışındadır!
 """
 
-root.protocol("WM_DELETE_WINDOW", on_close)  # Sağ üst köşedeki çarpı simgesine tıklanınca on_close fonksiyonunu çağır
+root.protocol("WM_DELETE_WINDOW", on_close) 
 
 terms_label = tk.Label(root, text=terms_text, padx=10, pady=10)
 terms_label.pack()
@@ -36,17 +35,15 @@ cancel_button = tk.Button(root, text="İptal", command=on_close)
 cancel_button.pack()
 
 def run_task_manager(root):
-    root.destroy()  # Onay penceresini kapat
-    subprocess.Popen(["python", "taskmanager_original.py"])  # Task Manager'ı başlat
+    root.destroy()  
+    subprocess.Popen(["python", "taskmanager_original.py"])  
 
 root.mainloop()
 
 
 
-# Göstermek istemediğiniz exeleri listeleyin
 ignore_list = ["chrome.exe","nvcontainer.exe","Registry","fontdrvhost.exe","rundll32.exe","sihost.exe","gamingservicesnet.exe","rvcontrolsvc.exe","MemCompression","microsoft.photos.exe","gameinputsvc.exe","taskhostw.exe","systemsettings.exe","smartscreen.exe","TextInputHost.exe","syzs_dl_svr.exe","powershell.exe","CompPkgSrv.exe","AppMarket.exe","dwm.exe","winlogon.exe","dashost.exe","spoolsv.exe","Securityhealthservice.exe","Securityhealthsystray.exe","SearchApp.exe","explorer.exe" ,"audiodg.exe","gamingservices.exe","System","smss.exe", "Lsass.exe", "RuntimeBroker.exe", "SearchProtocolHost.exe", "dllhost.exe","services.exe","wininit.exe","csrss.exe","ctfmon.exe","conhost.exe","cef_frame_render.exe","System Idle Process","sgrmbroker.exe","video.ui.exe","nvsphelper64.exe","SearchFilterHost.exe","mstsc.exe"]
 
-# Bu değişken, filtreleme için kullanılacaktır
 current_filter = None
 
 
@@ -80,33 +77,33 @@ def list_processes():
 
 
 def open_file_location():
-    selected_item = process_list.curselection()  # Seçilen öğeyi al
+    selected_item = process_list.curselection() 
     if selected_item:
-        index = selected_item[0]  # İlk seçilen öğeyi al
-        process_info = process_list.get(index)  # Seçilen öğenin metnini al
+        index = selected_item[0] 
+        process_info = process_list.get(index)
         pid = int(process_info.split("PID: ")[1].split(",")[0])  # PID'yi çıkar
         try:
             process = psutil.Process(pid)
             file_path = process.exe()
             if file_path:
-                subprocess.Popen(['explorer', '/select,', file_path])  # Dosya konumunu aç
+                subprocess.Popen(['explorer', '/select,', file_path]) 
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
 
 def update_process_list():
-    list_processes()  # İşlem listesini güncelle
-    root.after(10000, update_process_list)  # 10 saniye sonra tekrar güncelle
+    list_processes() 
+    root.after(10000, update_process_list) 
 
 def on_delete_click():
-    selected_item = process_list.curselection()  # Seçilen öğeyi al
+    selected_item = process_list.curselection()
     if selected_item:
-        index = selected_item[0]  # İlk seçilen öğeyi al
-        process_info = process_list.get(index)  # Seçilen öğenin metnini al
-        pid = int(process_info.split("PID: ")[1].split(",")[0])  # PID'yi çıkar
+        index = selected_item[0] 
+        process_info = process_list.get(index) 
+        pid = int(process_info.split("PID: ")[1].split(",")[0])
         try:
             process = psutil.Process(pid)
-            process.terminate()  # Seçilen işlemi sonlandır
-            list_processes()  # İşlemi sonlandırdıktan sonra işlem listesini güncelle
+            process.terminate() 
+            list_processes()
         except psutil.NoSuchProcess:
             pass
 
